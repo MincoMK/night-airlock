@@ -1,4 +1,4 @@
-import { alarm, externalDoor, internalDoor, oxygen } from "./airlock-raw";
+import { alarm, externalDoor, internalDoor, oxygen, oxygenDetector, emergencyAlarm } from "./airlock-raw";
 
 function transitionInternalState() {
   alarm.setOutput(true);
@@ -6,9 +6,21 @@ function transitionInternalState() {
   os.sleep(3);
   oxygen.setOutput(true);
   os.sleep(2);
-  internalDoor.setOutput(true);
+  for (let i = 0; i < 3; i++) {
+    if (oxygenDetector.getInput()) {
+      internalDoor.setOutput(true);
+      os.sleep(3);
+      alarm.setOutput(false);
+      return;
+    }
+    os.sleep(1);
+  }
+  internalDoor.setOutput(false);
+  emergencyAlarm.setOutput(true);
+  oxygen.setOutput(false);
+  externalDoor.setOutput(true);
   os.sleep(3);
-  alarm.setOutput(false);
+  emergencyAlarm.setOutput(false);
 }
 
 function transitionExternalState() {

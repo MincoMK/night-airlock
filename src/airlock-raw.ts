@@ -1,4 +1,4 @@
-const [doorExt, doorInt, detectR, oxyR, alarmR] = [
+const [doorExt, doorInt, detectR, oxyR, alarmR, emergencyAlarmR] = [
   peripheral.find("redstone_relay"),
 ] as any;
 
@@ -22,3 +22,4 @@ export const internalDoor = new RedstoneIO(doorInt, "top");
 export const alarm = new RedstoneIO(alarmR, "bottom");
 export const oxygenDetector = new RedstoneIO(detectR, "front");
 export const oxygen = new RedstoneIO(oxyR, "bottom");
+export const emergencyAlarm = new RedstoneIO(emergencyAlarmR, "bottom");
