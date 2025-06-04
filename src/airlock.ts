@@ -17,6 +17,7 @@ function transitionInternalState() {
   }
   internalDoor.setOutput(false);
   emergencyAlarm.setOutput(true);
+  os.sleep(2);
   oxygen.setOutput(false);
   externalDoor.setOutput(true);
   os.sleep(3);
