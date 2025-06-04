@@ -1,4 +1,4 @@
-const [doorExt, doorInt, detectR, oxyR, alarmR, emergencyAlarmR] = [
+const [doorExt, doorInt, emergencyAlarmR, detectR, oxyR, alarmR] = [
   peripheral.find("redstone_relay"),
 ] as any;
 

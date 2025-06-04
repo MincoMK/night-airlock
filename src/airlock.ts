@@ -5,13 +5,13 @@ function transitionInternalState() {
   externalDoor.setOutput(false);
   os.sleep(3);
   oxygen.setOutput(true);
-  os.sleep(2);
+  os.sleep(3);
   for (let i = 0; i < 3; i++) {
     if (oxygenDetector.getInput()) {
       internalDoor.setOutput(true);
       os.sleep(3);
       alarm.setOutput(false);
-      return;
+      return true;
     }
     os.sleep(1);
   }
@@ -21,6 +21,8 @@ function transitionInternalState() {
   externalDoor.setOutput(true);
   os.sleep(3);
   emergencyAlarm.setOutput(false);
+  alarm.setOutput(false);
+  return false;
 }
 
 function transitionExternalState() {

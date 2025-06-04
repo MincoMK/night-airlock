@@ -20,7 +20,12 @@ GUI.run(() => {
   } else {
     GUI.setTransitionToInternal();
     inTransition = true;
-    Airlock.transitionInternalState();
+    if (!Airlock.transitionInternalState()) {
+      GUI.setExternal();
+      state = false;
+      inTransition = false;
+      return;
+    }
     GUI.setInternal();
     state = true;
     inTransition = false;
