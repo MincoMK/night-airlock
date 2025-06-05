@@ -2,11 +2,11 @@ import { Airlock } from "./airlock";
 import { GUI } from "./gui";
 import { MonitorControl } from "./monitor";
 
-let state = true;
+let state = false;
 let inTransition = false;
 
-GUI.setInternal();
-Airlock.transitionInternalState();
+GUI.setExternal();
+Airlock.transitionExternalState();
 
 GUI.run(() => {
   if (inTransition) return;

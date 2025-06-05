@@ -1,4 +1,14 @@
-import { alarm, externalDoor, internalDoor, oxygen, oxygenDetector, emergencyAlarm } from "./airlock-raw";
+import {
+  alarm,
+  externalDoor,
+  internalDoor,
+  oxygen,
+  oxygenDetector,
+  emergencyAlarm,
+} from "./airlock-raw";
+import { playFile } from "./audio";
+
+const speaker = peripheral.find("speaker");
 
 function transitionInternalState() {
   alarm.setOutput(true);
@@ -9,20 +19,31 @@ function transitionInternalState() {
   for (let i = 0; i < 3; i++) {
     if (oxygenDetector.getInput()) {
       internalDoor.setOutput(true);
-      os.sleep(3);
-      alarm.setOutput(false);
+      parallel.waitForAll(
+        () => playFile(speaker, "online.dfpwm"),
+        () => {
+          os.sleep(3);
+          alarm.setOutput(false);
+        },
+      );
       return true;
     }
     os.sleep(1);
   }
-  internalDoor.setOutput(false);
-  emergencyAlarm.setOutput(true);
-  os.sleep(2);
-  oxygen.setOutput(false);
-  externalDoor.setOutput(true);
-  os.sleep(3);
-  emergencyAlarm.setOutput(false);
-  alarm.setOutput(false);
+  parallel.waitForAll(
+    () => playFile(speaker, "oxy.dfpwm"),
+    () => {
+      internalDoor.setOutput(false);
+      emergencyAlarm.setOutput(true);
+      os.sleep(2);
+      oxygen.setOutput(false);
+      externalDoor.setOutput(true);
+      os.sleep(3);
+      emergencyAlarm.setOutput(false);
+      alarm.setOutput(false);
+      return false;
+    },
+  );
   return false;
 }
 
@@ -31,7 +52,7 @@ function transitionExternalState() {
   internalDoor.setOutput(false);
   os.sleep(3);
   oxygen.setOutput(false);
-  os.sleep(2);
+  playFile(speaker, "safe.dfpwm");
   externalDoor.setOutput(true);
   os.sleep(3);
   alarm.setOutput(false);

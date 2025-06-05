@@ -15,7 +15,8 @@
     "noHeader": true,
     "noImplicitSelf": true,
     "luaBundle": "bundle.lua",
-    "luaBundleEntry": "src/main.ts"
+    "luaBundleEntry": "src/main.ts",
+    "noResolvePaths": ["cc.audio.dfpwm"]
   },
   "include": ["src/**/*"]
 }
